@@ -44,5 +44,5 @@ while 1:
             f.write(body)
             f.close()
 
-    print 'goto next'
+    print 'goto next [page: %s]' % page
     page += 1
