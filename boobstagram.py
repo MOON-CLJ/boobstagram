@@ -5,7 +5,7 @@ from eventlet.green import urllib2
 from lxml import etree
 import os
 
-base_url = 'http://boobstagram.fr/page/%s'
+base_url = 'http://boobstagram.com/category/boobs/page/%s/'
 pool = eventlet.GreenPool(10)
 
 
@@ -34,7 +34,7 @@ page = 1
 while 1:
     body = urllib2.urlopen(base_url % page).read()
     hxs = etree.HTML(body)
-    urls = hxs.xpath('//div[@id="wrapper"]//div[@class="photo"]/a/img/@src')
+    urls = hxs.xpath('//div[@id="wrapper"]//div[@class="entry"]/figure/a/@name')
     urls = filter_url(urls)
 
     for url, body in pool.imap(fetch, urls):
@@ -43,6 +43,5 @@ while 1:
             print 'write ' + url
             f.write(body)
             f.close()
-
     print 'goto next [page: %s]' % page
     page += 1
